@@ -15,11 +15,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hri:c:", ["ifile=", "config="])
         if not opts:
-            print 'Parameters Required!'
+            print('Parameters Required!')
             help_info()
             sys.exit(2)
     except getopt.GetoptError:
-        print 'Error, please use the following info to call the script correctly:'
+        print('Error, please use the following info to call the script correctly:')
         help_info()
         sys.exit(2)
     for opt, arg in opts:
@@ -31,8 +31,8 @@ def main(argv):
             inputfile = arg
         elif opt in ("-c", "--config"):
             config = arg
-    print 'Input file is ', inputfile
-    print 'Config selected is ', config
+    print('Input file is ', inputfile)
+    print('Config selected is ', config)
     update_settings(inputfile, config)
 
 
@@ -58,23 +58,23 @@ def set_configuration(config, option):
 
 
 def help_info():
-    print '\n\tpython ./update_git_config.py -i <inputfile> -c <config>'
-    print '\tFor example:'
-    print '\tTo set work config.:'
-    print '\t\tpython ./update_git_config.py -i ../git.cfg -c work'
-    print '\tor'
-    print '\tTo set personal config.:'
-    print '\t\tpython ./update_git_config.py -i ../git.cfg -c personal'
-    print '\tor'
-    print '\tTo read current config.:'
-    print '\t\tpython ./update_git_config.py -r'
+    print('\n\tpython ./update_git_config.py -i <inputfile> -c <config>')
+    print('\tFor example:')
+    print('\tTo set work config.:')
+    print('\t\tpython ./update_git_config.py -i ../git.cfg -c work')
+    print('\tor')
+    print('\tTo set personal config.:')
+    print('\t\tpython ./update_git_config.py -i ../git.cfg -c personal')
+    print('\tor')
+    print('\tTo read current config.:')
+    print('\t\tpython ./update_git_config.py -r')
     sys.exit()
 
 
 def read_settings():
     call(["git", "config", "user.name"])
     call(["git", "config", "user.email"])
-    print 'Current user.name and user.email settings'
+    print('Current user.name and user.email settings')
     sys.exit()
 
 
