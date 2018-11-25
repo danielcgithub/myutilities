@@ -9,23 +9,31 @@ from craigslist import CraigslistHousing
 import os
 import csv
 import pandas as pd
+import datetime
 
 count = 0
+cwd = os.getcwd()
+daily_csv_file_name = cwd + '/'+datetime.datetime.today().strftime('%Y-%m-%d')+'-results.csv'
+total_csv_file_name = cwd + '/total_results.csv'
 
 def main():
     search_and_write_to_csv()
-    #remove_duplicate_rows_from_csv()
+    remove_duplicate_rows_from_csv()
 
 
 def search_and_write_to_csv():
     # for loop taking in the defined zip codes, if not set, use a default list
     # default list could be the zip codes of each underground station
-    yellow_lines = {
-        "LAWRENCE": "M4N 1S1",
-        "EGLINTON": "M4S 2B8",
-        "DAVISVILLE": "M4S 1Z2"
+
+    # west to east starting Dundas West
+    green_line = {
+        "DUNDAS WEST": "M6P 1W7",
+        "DUFFERIN": "M6H 4E6",
+        "CHRISTIE": "M6G 3B1",
+        "BAY": "M5R 3N7"
     }
 
+    # north east to south to north west
     yellow_line = {
         "LAWRENCE": "M4N 1S1",
         "EGLINTON": "M4S 2B8",
@@ -51,62 +59,67 @@ def search_and_write_to_csv():
         "ST CLAIR WEST": "M5P 3N3"
     }
 
+    lines = [green_line, yellow_line]
 
-    for station in yellow_line:
-        zip_code = yellow_line[station]
-        search_distance = 1.5
-        max_price = 2500
-        cl_h = CraigslistHousing(site='toronto', area='tor', category='apa',
-                             filters={'zip_code':zip_code,'search_distance':search_distance,
-                                      'posted_today':True,'has_image':True,'max_price': max_price
-                                      })
-        results = cl_h.get_results(sort_by='newest', geotagged=True)
-        write_results_of_search_to_csv(results, station)
+    for line in lines:
+        print("Processing", line)
+        for station in line:
+            zip_code = line[station]
+            search_distance = 1.5
+            max_price = 2500
+            cl_h = CraigslistHousing(site='toronto', area='tor', category='apa',
+                                filters={'zip_code':zip_code,'search_distance':search_distance,
+                                        'posted_today':True,'has_image':True,'max_price': max_price
+                                        })
+            results = cl_h.get_results(sort_by='newest', geotagged=True)
+            write_results_of_search_to_csv(results, station)
 
 
 
 def write_results_of_search_to_csv(results, station):
 
-    cwd = os.getcwd()
-    file_name = cwd + '/results.csv'
+    with open (daily_csv_file_name, 'a', newline='') as f, open (total_csv_file_name, 'a', newline='') as g:
+        writer1 = csv.writer(f)
+        writer2 = csv.writer(g)
 
-    results_data = open(file_name, 'a', newline='')
-    # a is open for writing/append if already exists
-    csvwriter = csv.writer(results_data)
+        # a is open for write/append if already exists
 
-    print("Processing", station)
+        print("\tProcessing", station)
 
-    for result in results:
-        # removing unnecessary info
-        del result["id"]
-        del result["repost_of"]
-        del result["has_image"]
-        del result["has_map"]
+        for result in results:
+            # removing unnecessary info
+            del result["id"]
+            del result["repost_of"]
+            del result["has_image"]
+            del result["has_map"]
 
-        # adding the station into the result
-        result["Station"] = station
+            # adding the station into the result
+            result["Station"] = station
 
-        # writing in header row only the first time
-        global count
-        if count == 0:
-            header = result.keys()
-            csvwriter.writerow(header)
-            count += 1
+            # writing in header row only the first time
+            global count
+            if count == 0:
+                header = result.keys()
+                writer1.writerow(header)
+                writer2.writerow(header)
+                count += 1
+
+
+            writer1.writerow(result.values())
+            writer2.writerow(result.values())
         
-
-        csvwriter.writerow(result.values())
-
-    results_data.close()
+        f.close()
+        g.close()
 
 def remove_duplicate_rows_from_csv():
     print("Removing duplicates from csv")
-    cwd = os.getcwd()
-    file_name = cwd + '/results.csv'
-    df = pd.read_csv(file_name)
-    # dropping duplicates based on name and url columns
-    df.drop_duplicates(subset=['name','url'], keep='first', inplace=True)
-    df.to_csv(cwd + '/results.csv')
+    csv_files = [daily_csv_file_name, total_csv_file_name]
 
+    for csv_file in csv_files:
+        df = pd.read_csv(csv_file)
+        # dropping duplicates based on name and url columns
+        df.drop_duplicates(subset=['name','url'], keep='first', inplace=True)
+        df.to_csv(csv_file)
 
 
 if __name__ == "__main__":
