@@ -3,7 +3,8 @@
 ''' pip install python-craigslist
  https://pypi.org/project/python-craigslist/
 
- pip install python-googlegeocoder
+ pip install pandas
+
 '''
 from craigslist import CraigslistHousing
 import os
