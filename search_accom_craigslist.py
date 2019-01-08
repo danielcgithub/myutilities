@@ -79,9 +79,9 @@ def search_and_write_to_csv():
 
 def write_results_of_search_to_csv(results, station):
 
-    with open (daily_csv_file_name, 'a', newline='') as f, open (total_csv_file_name, 'a', newline='') as g:
-        writer1 = csv.writer(f)
-        writer2 = csv.writer(g)
+    with open (daily_csv_file_name, 'a', newline='') as daily_csv_file, open (total_csv_file_name, 'a', newline='') as total_csv_file:
+        daily_csv_file_writer = csv.writer(daily_csv_file)
+        total_csv_file_writer = csv.writer(total_csv_file)
 
         # a is open for write/append if already exists
 
@@ -101,16 +101,16 @@ def write_results_of_search_to_csv(results, station):
             global count
             if count == 0:
                 header = result.keys()
-                writer1.writerow(header)
-                writer2.writerow(header)
+                daily_csv_file_writer.writerow(header)
+                total_csv_file_writer.writerow(header)
                 count += 1
 
 
-            writer1.writerow(result.values())
-            writer2.writerow(result.values())
+            daily_csv_file_writer.writerow(result.values())
+            total_csv_file_writer.writerow(result.values())
         
-        f.close()
-        g.close()
+        daily_csv_file.close()
+        total_csv_file.close()
 
 def remove_duplicate_rows_from_csv():
     print("Removing duplicates from csv")
