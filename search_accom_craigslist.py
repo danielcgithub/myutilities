@@ -79,7 +79,7 @@ def search_and_write_to_csv():
 
 def write_results_of_search_to_csv(results, station):
 
-    with open (daily_csv_file_name, 'a', newline='') as daily_csv_file, open (total_csv_file_name, 'a', newline='') as total_csv_file:
+    with open (daily_csv_file_name, 'a', newline='', encoding="utf-8") as daily_csv_file, open (total_csv_file_name, 'a', newline='',  encoding="utf-8") as total_csv_file:
         daily_csv_file_writer = csv.writer(daily_csv_file)
         total_csv_file_writer = csv.writer(total_csv_file)
 
