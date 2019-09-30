@@ -1,0 +1,14 @@
+# vars passed to playbook
+# ansible-playbook varsub3.yaml --extra-vars "myhosts=dummy gather=yes pkg=httpd"
+- hosts: "{{ myhosts }}"
+  gather_facts: "{{gather}}"
+  tasks:
+    - name: install '{{ pkg }}'
+      yum:
+        name: "{{ pkg }}"
+        state: latest
+    - name: enable and start '{{ pkg }}'
+      service:
+        name: "{{ pkg }}"
+        enabled: yes
+        state: restarted

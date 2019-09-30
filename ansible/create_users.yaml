@@ -1,0 +1,10 @@
+---
+# ansible-playbook create_users.yaml --extra-vars "myhost=dummy username=epeabyr group=MTE"
+- hosts: "{{ myhost }}"
+  tasks:
+    - name: Add the user '{{ username }}' with a password and a primary group of '{{ group }}'
+      user:
+        name: "{{ username }}"
+        password: "{{ 'passwordsaresecret' | password_hash('sha512') }}"
+        comment: "{{ username }}"
+        group: "{{ group }}"

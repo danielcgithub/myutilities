@@ -1,0 +1,7 @@
+#ansible-playbook create_groups.yaml --extra-vars "myhost=dummy group=MTV"
+- hosts: "{{ myhost }}"
+  tasks:
+    - name: Ensure group '{{ group }}' exists
+      group:
+        name: "{{ group }}"
+        state: present

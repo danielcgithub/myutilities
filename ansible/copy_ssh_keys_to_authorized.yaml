@@ -1,0 +1,11 @@
+# ansible-playbook copy_ssh_keys_to_authorized.yaml --extra-vars "myhost=dummy"
+# copies any files ending in .pub that are in the /etc/ansible/public_keys dir
+- hosts: "{{ myhost }}"
+  tasks:
+    - name: Set up multiple authorized keys
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', item) }}"
+      with_fileglob:
+        - /etc/ansible/public_keys/*.pub

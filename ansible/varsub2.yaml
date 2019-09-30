@@ -1,0 +1,17 @@
+# vars in playbook
+- hosts: "{{ myhosts }}"
+  gather_facts: "{{gather}}"
+  vars:
+    myhosts: dummy
+    gather: yes
+    pkg: httpd
+  tasks:
+    - name: install '{{ pkg }}'
+      yum:
+        name: "{{ pkg }}"
+        state: latest
+    - name: enable and start '{{ pkg }}'
+      service:
+        name: "{{ pkg }}"
+        enabled: yes
+        state: restarted

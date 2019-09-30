@@ -1,0 +1,11 @@
+# ansible-playbook delete_users.yaml --extra-vars "hosts=dummy username=epeabyr"
+- hosts: "{{ hosts }}"
+  tasks:
+    - name: killing any process belonging to the user '{{ username }}'
+      command: pkill -KILL -u '{{ username }}'
+    - name: Remove the user '{{ username }}'
+      user:
+        name: "{{ username }}"
+        state: absent
+        remove: yes
+        force: yes

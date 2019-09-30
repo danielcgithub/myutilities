@@ -1,0 +1,13 @@
+# showing that have to change "name: httpd" in multiple spots
+- hosts: dummy
+  gather_facts: yes
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: latest
+    - name: enable and start httpd
+      service:
+        name: httpd
+        enabled: yes
+        state: restarted
