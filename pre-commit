@@ -20,6 +20,6 @@ if [ "$username" != "danielcgithub" ]; then
 		~/workspaces/personalGit.sh
 	done
 else
-	echo "${GREEN}Nothing to do as username=$username ${NC}"
+	echo -e "${GREEN}Nothing to do as username=$username ${NC}"
 
 fi
