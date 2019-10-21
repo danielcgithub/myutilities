@@ -53,8 +53,8 @@ def set_configuration(config, option):
     email = config[option]['email']
     print('Username that will be set = '+username)
     print('E-mail that will be set = '+email)
-    call(["git", "config", "--global", "user.name", username])
-    call(["git", "config", "--global", "user.email", email])
+    call(["git", "config", "user.name", username])
+    call(["git", "config", "user.email", email])
 
 
 def help_info():
