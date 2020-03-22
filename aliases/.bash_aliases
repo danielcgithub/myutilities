@@ -20,7 +20,8 @@ alias klo='alias klo; kubectl logs -f'
 alias gs='git status'
 alias gc='git commit -m'
 alias gpullmaster='alias gpullmaster; git pull --rebase origin master'
-alias gpushrefs='alias gpushrefs; git push origin HEAD:refs/for/master'
+alias gpushw='alias gpushw; git push origin HEAD:refs/for/master'
+alias gpushh='alias gpushh; git push origin master'
 alias greset='alias greset; git reset --hard origin/master'
 
 parse_git_branch() {
